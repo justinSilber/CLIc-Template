@@ -1,0 +1,9 @@
+*.terraform*
+*.tfstate*
+*.tfplan
+acme_chain.pem
+acme_key.pem
+secrets.yml
+hosts
+new_ip.yml
+client.py.save
