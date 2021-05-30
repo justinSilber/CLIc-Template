@@ -1,0 +1,86 @@
+# roles/secure/tasks/main.xml
+# Tasks for secure role
+
+# Basic things to make the server safer
+
+# Install net-tools, for netstat in particular
+- name: Install net-tools
+  apt:
+      name: net-tools
+      state: present
+  become: yes
+
+# Install fail2ban to block repeated login attempts
+- name: Install fail2ban
+  apt:
+      name: fail2ban
+      state: present
+  become: yes
+
+# Activate Universal Firewall
+
+- name: Allow SSH
+  community.general.ufw:
+    rule: allow
+    proto: tcp
+    port: '22'
+    direction: in
+  become: yes
+
+- name: Allow CLIc
+  community.general.ufw:
+    rule: allow
+    proto: tcp  
+    port: '33333'
+    direction: in
+  become: yes
+
+- name: Activate UFW
+  community.general.ufw:
+    state: enabled
+    policy: deny
+  become: yes
+
+# Disables logging in as root, and logging in with passwordsHwNFRq!C*o@8D7C4#$YdADFj4Ls9UHUAUMv&Syy*J*UmUSFXuzBDg6o9Edg79PMn
+# SSH certificates only
+
+- name: ChallengeResponseAuthentication set to 'no'
+  replace:
+    path: '/etc/ssh/sshd_config'
+    regexp: '^(.*)ChallengeResponseAuthentication(.*)$'
+    replace: 'ChallengeResponseAuthentication no'
+  become: yes
+
+- name: Disable password authentication
+  replace:
+    path: '/etc/ssh/sshd_config'
+    regexp: '^(.*)PasswordAuthentication(.*)$'
+    replace: 'PasswordAuthentication no'
+  become: yes
+
+- name: UsePAM set to 'no'
+  replace:
+    path: '/etc/ssh/sshd_config'
+    regexp: '^(.*)UsePAM(.*)$'
+    replace: 'UsePAM no'
+  become: yes
+
+- name: Disable logging in as root
+  replace:
+    path: '/etc/ssh/sshd_config'
+    regexp: '^(.*)PermitRootLogin yes(.*)$'
+    replace: 'PermitRootLogin no'
+  become: yes
+
+- name: Prohibit using password for root login (safety redundancy)
+  replace:
+    path: '/etc/ssh/sshd_config'
+    regexp: '^(.*)#PermitRootLogin p(.*)$'
+    replace: 'PermitRootLogin prohibit-password'
+  become: yes
+
+- name: restart sshd
+  systemd:
+    name: sshd
+    state: reloaded
+  become: yes

@@ -1,0 +1,20 @@
+# roles/dns/tasks/main.yml
+
+# Defines the tasks for managing Cloudflare DNS
+
+- name: Import the new Linode CLIc Server IP
+  include_vars:
+    file: "new_ip.yml"
+
+- name: Create 'A' record for indicated domain
+# WARNING: This will remove all other configured 'A' records for given domain name
+# Comment out or remove the 'solo' argument to add a new record without removing any
+  community.general.cloudflare_dns:
+    zone: "{{ main_domain }}"
+    record: "{{ clic_domain }}"
+    type: 'A'
+    value: "{{ linode_clic_ip }}"
+    account_email: "{{ cloudflare_email }}"
+    api_token: "{{ cloudflare_token }}"
+    ttl: 120
+    solo: yes

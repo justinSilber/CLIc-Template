@@ -1,0 +1,65 @@
+# roles/clicserv/tasks/main.yml
+# Role definition for clicserv
+
+# Set the hostname
+- name: set hostname
+  hostname:
+    name: clic
+    use: systemd
+
+# Copies the CLIc server files and creates the Docker container
+
+- name: Make sure clic subfolder exists
+  file:
+    path: /home/clicadmin/clic
+    state: directory
+
+- name: Copy CLIc server
+  copy: 
+    src: clic-server.py
+    dest: /home/clicadmin/clic/
+    owner: clicadmin
+  become: yes
+
+- name: Copy cert chain
+  copy: 
+    src: acme_chain.pem
+    dest: /home/clicadmin/clic/
+    owner: clicadmin
+  become: yes
+
+- name: Copy cert key
+  copy: 
+    src: acme_key.pem
+    dest: /home/clicadmin/clic/
+    owner: clicadmin
+  become: yes
+
+# Process to create and deploy CLIc server container
+
+- name: Copy Dockerfile
+  copy:
+    src: Dockerfile
+    dest: /home/clicadmin/clic/
+    owner: clicadmin
+  become: yes
+
+- name: Build CLIc server container
+  community.docker.docker_image:
+    build:
+      path: /home/clicadmin/clic/
+    name: clicserv
+    state: present
+    force_source: yes
+    source: build
+  become: yes
+
+- name: Run container
+  community.docker.docker_container:
+    image: clicserv
+    pull: no
+    name: clicserv
+    restart_policy: unless-stopped
+    published_ports: 33333:33333
+    interactive: yes
+    tty: yes

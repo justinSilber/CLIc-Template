@@ -1,0 +1,26 @@
+# roles/clicadmin/tasks/main.yml
+# Creates clicadmin user
+
+# The 'secrets.yml' file is encrypted with Ansible Vault
+# It contains non-public information, such as the clicadmin
+# user password.
+- include_vars: secrets.yml
+
+- name: Create clicadmin user
+  user:
+    name: clicadmin
+    password: "{{ clicadmin_pword | password_hash('sha512') }}"
+    generate_ssh_key: yes
+    ssh_key_bits: 4096
+    append: yes
+    groups: "{{ clicadmin_groups }}"
+    shell: /bin/bash
+    state: present
+  become: yes
+
+- name: Add authorized ssh keys
+  authorized_key:
+    key: "{{ item }}"
+    user: clicadmin
+    state: present
+  with_list: "{{ auth_keys }}"

@@ -1,0 +1,14 @@
+# roles/pip3/tasks/main.yml
+# Role definition for pip3
+
+- name: install python pip3
+  apt:
+    name: "{{ packages }}"
+    state: present
+  become: yes
+
+- name: install python modules
+  pip:
+    name: "{{ pip_packages }}"
+    state: latest
+    

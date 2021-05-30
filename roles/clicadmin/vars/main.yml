@@ -1,0 +1,16 @@
+# roles/clicadmin/vars/main.yml
+# Variables for clicadmin role
+
+clicadmin_groups:
+  - sudo
+
+# You can uncomment and add yours in plaintext, or keep them more
+# securely in an encrypted secrets.yml file
+
+# User password for clicadmin
+# clicadmin_pword:
+  # in encrypted secrets.yml
+
+# Public SSH keys for clicadmin user:
+# auth_keys:
+  # in encrypted secrets.yml

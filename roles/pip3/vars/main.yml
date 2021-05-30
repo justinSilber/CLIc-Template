@@ -1,0 +1,12 @@
+# roles/pip3/vars/main.yml
+# Variables for pip3 role
+
+# Packages for apt to install
+packages:
+  - python3-pip
+  - pkg-config
+
+# Packages for pip to install
+# Installes to host, *not* in container
+pip_packages:
+  - docker

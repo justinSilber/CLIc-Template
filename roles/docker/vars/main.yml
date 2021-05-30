@@ -1,0 +1,17 @@
+# roles/docker/vars/main.yml
+# Vars for Docker role
+
+# Docker dependencies
+dep_packages:
+  - apt-transport-https
+  - ca-certificates
+  - curl
+  - gnupg
+  - lsb-release
+  
+# Docker install packages
+docker_packages:
+  - docker-ce
+  - docker-ce-cli
+  - containerd.io
+  

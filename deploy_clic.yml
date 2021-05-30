@@ -1,0 +1,17 @@
+# deploy_clic.yml
+
+# Deploys the CLIc server to Linode and generates the TLS keys
+# then changes the Cloudfare DNS 'A' record to new IP.
+
+- name: Deploy CLIc server & generate keys
+  
+  hosts: localhost
+
+  vars_files:
+    - secrets.yml
+  
+  roles:
+  - role: terraform
+  - role: dns
+    when: (operation == "create")
+

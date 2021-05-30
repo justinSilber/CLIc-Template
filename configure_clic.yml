@@ -1,0 +1,67 @@
+# configure_clic.yml
+
+# Configures the CLIc server after deployment
+
+- name: Configure CLIc server
+
+  hosts: newhost
+
+  vars:
+    ansible_user: clicadmin
+    ansible_become_password: "{{ clicadmin_pword }}"
+
+  vars_files:
+    - secrets.yml
+
+  gather_facts: no
+
+  pre_tasks:
+
+    - name: Test clicadmin user SSH
+      ping:  # no arguments
+      ignore_unreachable: true
+      ignore_errors: true
+      changed_when: ping.unreachable is defined
+      register: clicadmin_test
+
+    - name: Use root if Clicadmin not available
+      when: clicadmin_test.unreachable is defined
+      connection: local
+      set_fact:
+        ansible_user: root
+        ansible__become_password: "{{ root_pword }}"
+
+    - name: Gather facts
+      setup:
+
+    - name: Pause before updating apt cache
+      pause:
+        seconds: 15
+        
+    - name: Update apt cache
+      apt:
+        update_cache: yes
+      register: apt_result
+      until: apt_result is success
+      ignore_errors: yes
+      become: yes
+
+    - name: Use command apt update if apt module fails
+      command: apt update
+      when: 
+        - apt_result is failed
+      become: yes
+
+    - name: Show facts available on the system
+      ansible.builtin.debug:
+        var: ansible_facts
+      become: yes
+ 
+  roles:
+    - role: clicadmin
+    - role: pip3
+    - role: docker
+    - role: clicserv
+    - role: secure
+
+...

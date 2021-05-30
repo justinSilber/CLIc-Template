@@ -1,0 +1,12 @@
+# clic_main.yml
+
+# Main file co-ordinating Deployment and Configuration scripts
+
+- name: Deploy CLIc Server
+  import_playbook: deploy_clic.yml
+
+- name: Configure CLIc Server
+  import_playbook: configure_clic.yml
+  when: (operation == "create")
+
+
