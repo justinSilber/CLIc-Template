@@ -54,9 +54,9 @@ As of right now I'm stoked to have gotten the basic functionality of everything 
 ## Technical Debts of Gratitude
 I owe the following people and sources for inspiration, learning, and the occasional cribbed code snippet on this project:
 
-Marc Weisel (https://github.com/mweisel) for my first exposure to Ansible and Terraform through his GNS3 Azure deployment that also helped me earn my CCNA.
-TechWithTim (@techwithtimm) for his socket programming tutorial that helped me wrap my head around sockets, and expanded on his basic server config.
-This StreamHacker article by "Jacob" (https://streamhacker.com/2020/02/24/using-lastpass-with-ansible-vault/) that I adapted to use pass instead of LastPass
-Rahul Rai (@rahulrai_in) for his excellent article on incorporating Terraform in to Ansible playbooks (https://thecloudblog.net/post/simplifying-terraform-deployments-with-ansible-part-2/)
+- Marc Weisel (https://github.com/mweisel) for my first exposure to Ansible and Terraform through his GNS3 Azure deployment that also helped me earn my CCNA.
+- TechWithTim (@techwithtimm) for his socket programming tutorial that helped me wrap my head around sockets, and expanded on his basic server config.
+- This StreamHacker article by "Jacob" (https://streamhacker.com/2020/02/24/using-lastpass-with-ansible-vault/) that I adapted to use pass instead of LastPass
+- Rahul Rai (@rahulrai_in) for his excellent article on incorporating Terraform in to Ansible playbooks (https://thecloudblog.net/post/simplifying-terraform-deployments-with-ansible-part-2/)
 
 
