@@ -24,6 +24,7 @@ class Clicserver:
         self.DISCONNECT_MESSAGE = "#!@!DISCONNECT!@!#" #>>>> Message the client will send to disconnect
         self.USER_TIMEOUT = 30 #>>>>>>>>>>>>>>>>>>>>>>>>>>>> Time to wait for blocking sockets (especially when waiting for username)
         self.KEEPALIVE = "#!@!KEEPALIVE!@!#" #>>>>>>>>>>>>>> Message sent to client to confirm socket is up
+        self.GIVECLIENTS = "#!@!GIVECLIENT!@!#" #>>>>>>>>>>> Message triggers server to send client list
         self.shutdown_flag = threading.Event() #>>>>>>>>>>>> Flag indicating a server shutdown has been triggered
         self.kicked_user_flag = threading.Event() #>>>>>>>>> Flag indicating a user was kicked off
         self.kicked_by = None #>>>>>>>>>>>>>>>>>>>>>>>>>>>>> Holds the name of the thread that closed the user's connection
@@ -122,6 +123,10 @@ class Clicserver:
                             del self.user_list[conn] # Removes the connection from active user list
                             connected = False
                             return False
+                        if msg == self.GIVECLIENTS: #If the user requests active user list, send it to them
+                            self.send_msg("Current users are:", conn)
+                            for user in self.user_list:
+                                self.send_msg(f"{self.user_list[user]['username']}", conn)
                         if msg[0:3] == "/dm":
                             self.send_dm(msg, conn)
                             continue 

@@ -15,6 +15,7 @@ ADDR = (server, PORT) #>>>>>>>>>>>>>>>>>>>>>>>> Tuple holding socket info
 FORMAT = 'utf-8' #>>>>>>>>>>>>>>>>>>>>>>>>>>>>> self.FORMAT text will be transmitted in
 DISCONNECT_MESSAGE = "#!@!DISCONNECT!@!#" #>>>> Message the client will send to disconnect
 KEEPALIVE = "#!@!KEEPALIVE!@!#" #>>>>>>>>>>>>>> Message sent to client to confirm socket is up
+GIVECLIENTS = "#!@!GIVECLIENT!@!#" #>>>>>>>>>>> Message triggers server to send client list
 context = ssl.create_default_context() #>>>>>>> Context wrapper to apply TLS over sockets
 
 # !*!*!*!*!* WARNING: INSECURE! For testing/dev use only! *!*!*!*!*!
@@ -77,6 +78,7 @@ def get_help():
     """Prints all the available server commands"""
     print("\nAvailable commands are:")
     print("'/q' ......... Shutdown (quit) server")
+    print("'/u' ......... See who is online")
     print("\n")
     return None
 
@@ -90,6 +92,9 @@ def client_input():
         if speak == "/q":
             send_msg(DISCONNECT_MESSAGE)
             print("\nDisconnecting. Goodbye!")
+        if speak == "/u":
+            send_msg(GIVECLIENTS)
+
         else:
             send_msg(speak)
             continue
