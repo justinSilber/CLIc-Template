@@ -40,7 +40,7 @@ At this point you can run *./deploy_clic.sh init* to initialize Terraform, follo
 As of right now I'm stoked to have gotten the basic functionality of everything working, along with some simple server controls. Here's my list of additional features I'm planning to implement, in no particular order:
   1. Better user help for the client
   2. Consistent message spacing on client
-  3. Active user list on client-side
+  3. ~~Active user list on client-side~~ ✅ Implemented :)
   4. Username database with password access
   5. Mod powers
   6. Ban list
